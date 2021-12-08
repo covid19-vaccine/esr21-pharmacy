@@ -23,17 +23,13 @@ setup(
     long_description=README,
     zip_safe=False,
     keywords='django esr21 pharmacy',
-    install_requires=[
-        'django-cors-headers',
-        'django-rest-framework'
-    ],
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],

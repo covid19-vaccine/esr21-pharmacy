@@ -1,8 +1,9 @@
 from django.db import models
 from edc_base.model_mixins import BaseUuidModel
+from edc_base.sites import CurrentSiteManager, SiteModelMixin
 
 
-class DrugRequisition(BaseUuidModel):
+class DrugRequisition(BaseUuidModel, SiteModelMixin):
     injection_site = models.CharField(
         verbose_name='Injection site name',
         max_length=25,
@@ -32,6 +33,9 @@ class DrugRequisition(BaseUuidModel):
     quantity_received = models.IntegerField(
         verbose_name='Quantity received'
     )
+
+    on_site = CurrentSiteManager()
+
 
     class Meta:
         app_label = 'esr21_pharmacy'
