@@ -1,5 +1,5 @@
 from django.contrib import admin
-from edc_model_admin import audit_fieldset_tuple
+from edc_model_admin import audit_fieldset_tuple, audit_fields
 
 from .modeladmin_mixins import ModelAdminMixin
 from ..admin_site import esr21_pharmacy_admin
@@ -11,17 +11,26 @@ from ..models.drug_accountability_log import DrugAccountabilityLog
 class DrugAccountabilityLogAdmin(ModelAdminMixin, admin.ModelAdmin):
     form = DrugAccountabilityLogForm
 
+    radio_fields = {
+        'injection_site': admin.VERTICAL,
+        'status':admin.VERTICAL
+    }
+
+    readonly_fields = ['details']
+
     fieldsets = (
         (None, {
             'fields': (
+                'tracking_identifier',
                 'date',
-                'site',
+                'injection_site',
                 'lot_number',
                 'exp_date',
-                'requisition_form_number',
                 'details',
-                'received_or_issued',
-                'balance_forward',
+                'quantity_order',
+                'quantity_received',
+                'issued',
+                'balance',
                 'status',
                 'comments'
             )
@@ -30,3 +39,7 @@ class DrugAccountabilityLogAdmin(ModelAdminMixin, admin.ModelAdmin):
         audit_fieldset_tuple
 
     )
+
+    def get_readonly_fields(self, request, obj=None):
+        return (super().get_readonly_fields(request, obj=obj) + audit_fields +
+                ('tracking_identifier',))

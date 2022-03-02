@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'esr21_pharmacy',
+    'esr21_pharmacy.apps.AppConfig',
 
     # edc
     'edc_base.apps.AppConfig',
