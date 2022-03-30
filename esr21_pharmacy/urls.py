@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import RedirectView
+
 from .admin_site import esr21_pharmacy_admin
+
+app_name = 'esr21_pharmacy'
 
 urlpatterns = [
     path('admin/', esr21_pharmacy_admin.urls),
+    path('', RedirectView.as_view(url='admin/'), name='home_url'),
 ]

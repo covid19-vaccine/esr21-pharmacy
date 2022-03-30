@@ -1,98 +1,55 @@
 from django.db import models
+from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
-from edc_constants.choices import YES_NO
+from edc_base.sites import CurrentSiteManager, SiteModelMixin
+from edc_identifier.model_mixins import TrackingIdentifierModelMixin
+
+from ..choices import site_names
+from ..identifiers import RequisitionIdentifier
 
 
-class DrugRequisition(BaseUuidModel):
+class DrugRequisition(TrackingIdentifierModelMixin, BaseUuidModel,
+                      SiteModelMixin):
+
+    tracking_identifier_cls = RequisitionIdentifier
+
+    tracking_identifier = models.CharField(
+        verbose_name="Requisition Form Number",
+        max_length=36,
+        unique=True,
+        editable=False
+    )
 
     injection_site = models.CharField(
         verbose_name='Injection site name',
         max_length=25,
+        choices=site_names,
     )
 
-    investigator = models.CharField(
-        verbose_name='Investigator of Record Name',
-        default='Dr Joseph Makhema',
-        max_length=20
-    )
-
-    date = models.DateField(
+    date = models.DateTimeField(
         verbose_name='Date',
-    )
-
-    inventory = models.IntegerField(
-        verbose_name='Current Inventory',
-    )
-
-    study_product_name = models.CharField(
-        verbose_name='Study Product Name',
-        max_length=100,
-        default='AstraZeneca Covid-19 vaccine',
-    )
-
-    units = models.CharField(
-        verbose_name='Units',
-        default='5ml vials',
-        max_length=25
     )
 
     quantity_order = models.IntegerField(
         verbose_name='Quantity Order'
     )
 
-    quantity_issued = models.IntegerField(
-        verbose_name='Quantity issued'
-    )
+    history = HistoricalRecords()
 
-    batch_number = models.CharField(
-        verbose_name='Batch Number',
-        max_length=25,
-    )
+    on_site = CurrentSiteManager()
 
-    exp_date = models.DateTimeField(
-        verbose_name='Expiration Date',
-    )
+    def __str__(self):
+        return f'{self.tracking_identifier}, {self.tracking_identifier}'
 
-    quantity_received = models.IntegerField(
-        verbose_name='Quantity received'
-    )
+    def natural_key(self):
+        return self.tracking_identifier
 
-    study_product_ordered_by = models.CharField(
-        verbose_name='Study product ordered by',
-        max_length=50,
-    )
+    def save(self, *args, **kwargs):
+        if not self.tracking_identifier:
+            self.tracking_identifier = self.tracking_identifier_cls().identifier
+        super().save(*args, **kwargs)
 
-    title = models.CharField(
-        verbose_name='Tittle',
-        max_length=50,
-    )
-
-    ordered_by_date_time = models.DateTimeField(
-        verbose_name='Date',
-    )
-
-    acceptable_temp_range = models.CharField(
-        verbose_name='Acceptable temperature range for study product',
-        default='2 to 8 °C',
-        max_length=10
-    )
-
-    delivery_site_temp = models.IntegerField(
-        verbose_name='Cooler-box temperature reading at delivery to site',
-        help_text='°C'
-    )
-
-    last_dose_temp = models.IntegerField(
-        verbose_name='Cooler-box temperature reading when last dose was given',
-        help_text='°C'
-    )
-
-    temp_control_during_trans = models.CharField(
-        verbose_name='Was the temperature control acceptable during use at injection site?',
-        choices=YES_NO,
-        max_length=10
-    )
-
-    transportation_control_comment = models.TextField(
-        verbose_name='Comment',
-    )
+    class Meta:
+        app_label = 'esr21_pharmacy'
+        verbose_name = 'Drug Requisition'
+        verbose_name_plural = 'Drug Requisition'

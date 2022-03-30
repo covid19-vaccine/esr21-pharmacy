@@ -1,105 +1,89 @@
+from django.utils import timezone
+from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models import PROTECT
+from edc_base import get_utcnow
 from edc_base.model_mixins import BaseUuidModel
+from edc_base.sites import SiteModelMixin
+
+from esr21_pharmacy.choices import site_names, statuses
 
 
-class DrugAccountabilityLog(BaseUuidModel):
-    site = models.CharField(
-        verbose_name='Injection site name',
+class DrugAccountabilityLog(SiteModelMixin, BaseUuidModel):
+    injection_site = models.CharField(
+        verbose_name='Site name',
         max_length=25,
-    )
+        blank=True,
+        choices=site_names,
 
-    study_name = models.CharField(
-        verbose_name='Study name',
-        default='AZD1222-ESR-21-21311',
-        max_length=20
-    )
-
-    investigator = models.CharField(
-        verbose_name='Investigator of Record Name',
-        default='Dr Joseph Makhema',
-        max_length=20
-    )
-
-    study_product_name = models.CharField(
-        verbose_name='Study Product Name',
-        max_length=100,
-        default='AstraZeneca Covid-19 vaccine',
-    )
-
-    manufacturer = models.CharField(
-        verbose_name='Manufacturer',
-        max_length=100,
-        default='AstraZeneca',
-    )
-
-    storage_temp = models.CharField(
-        verbose_name='Storage temperature',
-        max_length=100,
-        default='2-8 °C',
-    )
-
-    package_size = models.CharField(
-        verbose_name='Package size',
-        default='5ml vials',
-        max_length=25
     )
 
     lot_number = models.CharField(
         verbose_name='Lot number',
-        max_length=20
+        max_length=20,
+        default=None
     )
 
     exp_date = models.DateTimeField(
         verbose_name='Expiration Date',
+        validators=[
+            MinValueValidator(limit_value=timezone.now())
+        ]
     )
-
-
-class DrugAccountabilityLogInline(BaseUuidModel):
-    drug = models.ForeignKey(DrugAccountabilityLog, on_delete=PROTECT)
 
     date = models.DateTimeField(
         verbose_name='Date',
+        default=get_utcnow
     )
 
-    requisition_form_number = models.CharField(
+    tracking_identifier = models.CharField(
         verbose_name='Requisition form number',
-        max_length=25
+        max_length=25,
+        null=True,
+        blank=True
     )
 
-    details = models.CharField(
+    details = models.TextField(
         verbose_name='Details',
-        max_length=100
-
+        default="VAC008001"
     )
 
-    received_or_issued = models.IntegerField(
-        verbose_name='Quantity received or issues'
+    issued = models.IntegerField(
+        verbose_name='Quantity issued',
+        null=True,
+        blank=True
     )
 
-    balance_forward = models.IntegerField(
-        verbose_name='Balance forward'
+    quantity_order = models.IntegerField(
+        verbose_name='Quantity ordered',
+        null=True,
+        blank=True
+    )
+    quantity_received = models.IntegerField(
+        verbose_name='Quantity received',
+        null=True,
+        blank=True
     )
 
-    status = models.IntegerField(
-        verbose_name='Status (Active/Quarantined/Disposed)'
+    balance = models.IntegerField(
+        verbose_name='Balance Forward',
+        null=True,
+        blank=True
+    )
+
+    status = models.CharField(
+        verbose_name='Status',
+        null=True,
+        max_length=30,
+        choices=statuses
     )
 
     comments = models.TextField(
-        verbose_name='Comment'
+        verbose_name='Comment',
+        null=True,
+        blank=True
     )
 
-    registered_pharmacist_initials = models.CharField(
-        verbose_name='R.Ph. Initials',
-        max_length=5
-
-    )
-
-    qc_initial = models.CharField(
-        verbose_name='QC initial',
-        max_length=3
-    )
-
-    qc_initial_date = models.DateField(
-        verbose_name='QC initial date'
-    )
+    class Meta:
+        app_label = 'esr21_pharmacy'
+        verbose_name = 'Drug Accountability'
+        verbose_name_plural = 'Drug Accountability'

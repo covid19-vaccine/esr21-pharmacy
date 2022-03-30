@@ -9,13 +9,20 @@ dichotomous = {
 }
 
 type_of_work_choices = {
-    ('occasional or Casual employment (piece job)', 'Occasional or Casual employment (piece job)'),
+    ('occasional or Casual employment (piece job)',
+     'Occasional or Casual employment (piece job)'),
     ('seasonal employment', 'Seasonal employment'),
-    ('formal wage employment (full-time)', 'Formal wage employment (full-time)'),
-    ('formal wage employment (part-time)', 'Formal wage employment (part-time)'),
+    (
+        'formal wage employment (full-time)',
+        'Formal wage employment (full-time)'),
+    (
+        'formal wage employment (part-time)',
+        'Formal wage employment (part-time)'),
     ('self-employed in agriculture', 'Self-employed in agriculture'),
-    ('self-employed making money, full time', 'Self-employed making money, full time'),
-    ('self-employed making money, part time', 'Self-employed making money, part time'),
+    ('self-employed making money, full time',
+     'Self-employed making money, full time'),
+    ('self-employed making money, part time',
+     'Self-employed making money, part time'),
     ('do not want to answer', 'Do not want to answer'),
     ('other', 'Other')
 }
@@ -24,7 +31,8 @@ work_description = {
     ('farmer (own land)', 'Farmer (own land)'),
     ('farm work on employers land', 'Farm work on employers land'),
     ('domestic worker', 'Domestic worker'),
-    ('work in bar/ hotel/ guest house/ entertainment venue', 'Work in bar/ hotel/ guest house/ entertainment venue'),
+    ('work in bar/ hotel/ guest house/ entertainment venue',
+     'Work in bar/ hotel/ guest house/ entertainment venue'),
     ('fishing', 'Fishing'),
     ('mining', 'Mining'),
     ('tourism/game parks', 'Tourism/game parks'),
@@ -84,5 +92,21 @@ YES_NO_DK_DWTA = {
 designations = {
     ('Pharmacy Personnel at study site', 'Pharmacy Personnel at study site'),
     ('Pharmacy personnel at BHP', 'Pharmacy personnel at BHP'),
-    ('Indicator Manager/ Destruction monitor', 'Indicator Manager/ Destruction monitor')
+    ('Indicator Manager/ Destruction monitor',
+     'Indicator Manager/ Destruction monitor')
 }
+
+site_names = [
+    ('CMS', 'CMS'),
+    ('Gaborone', 'Gaborone'),
+    ('Francistown', 'Francistown'),
+    ('Maun', 'Maun'),
+    ('Phikwe', 'Phikwe'),
+    ('Serowe', 'Serowe'),
+]
+
+statuses = [
+    ('active', 'Active'),
+    ('quarantined', 'Quarantined'),
+    ('disposed', 'Disposed')
+]
