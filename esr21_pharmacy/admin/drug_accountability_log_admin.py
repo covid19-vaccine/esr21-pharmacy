@@ -13,10 +13,10 @@ class DrugAccountabilityLogAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     radio_fields = {
         'injection_site': admin.VERTICAL,
-        'status':admin.VERTICAL
-    }
+        'status': admin.VERTICAL
+        }
 
-    readonly_fields = ['details']
+    readonly_fields = ['details', 'balance']
 
     fieldsets = (
         (None, {
@@ -30,15 +30,15 @@ class DrugAccountabilityLogAdmin(ModelAdminMixin, admin.ModelAdmin):
                 'quantity_order',
                 'quantity_received',
                 'issued',
-                'balance',
                 'status',
-                'comments'
-            )
-        }
+                'comments',
+                'balance',
+                )
+            }
          ),
         audit_fieldset_tuple
 
-    )
+        )
 
     def get_readonly_fields(self, request, obj=None):
         return (super().get_readonly_fields(request, obj=obj) + audit_fields +

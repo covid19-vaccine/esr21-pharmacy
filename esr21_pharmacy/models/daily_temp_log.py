@@ -4,7 +4,7 @@ from edc_base.model_mixins import BaseUuidModel
 from edc_base.sites import SiteModelMixin
 
 
-class DrugDisposalUpload(SiteModelMixin, BaseUuidModel):
+class DailyTempLogUpload(SiteModelMixin, BaseUuidModel):
     description = models.CharField(
         verbose_name='Description',
         max_length=255,
@@ -24,5 +24,5 @@ class DrugDisposalUpload(SiteModelMixin, BaseUuidModel):
 
     class Meta:
         app_label = 'esr21_pharmacy'
-        verbose_name = 'Drug Disposal PDF Documents'
-        verbose_name_plural = 'Drug Disposal PDF Documents'
+        verbose_name = 'Upload Daily Temperature Log PDF Document'
+        verbose_name_plural = 'Daily Temperature Log PDF Documents'

@@ -1,12 +1,6 @@
 from django import forms
 
-from esr21_pharmacy.models import IncidentReport, IncidentReportUpload
-
-
-class IncidentReportForm(forms.ModelForm):
-    class Meta:
-        models = IncidentReport
-        fields = '__all__'
+from esr21_pharmacy.models import IncidentReportUpload
 
 
 class IncidentReportUploadForm(forms.ModelForm):

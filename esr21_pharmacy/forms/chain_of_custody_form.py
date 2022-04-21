@@ -1,12 +1,6 @@
 from django import forms
 
-from ..models import ChainOfCustody, ChainOfCustodyUpload
-
-
-class ChainOfCustodyForm(forms.ModelForm):
-    class Meta:
-        models = ChainOfCustody
-        fields = '__all__'
+from ..models import ChainOfCustodyUpload
 
 
 class ChainOfCustodyUploadForm(forms.ModelForm):
